@@ -1,0 +1,17 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f4f6f9; color: #1a1a2e; }
+.dashboard { max-width: 900px; margin: 0 auto; padding: 2rem; }
+.dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.dash-header h1 { font-size: 1.8rem; font-weight: 600; }
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.card { background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid #e5e7eb; }
+.card h2 { font-size: 1rem; color: #6b7280; margin-bottom: 1rem; }
+.flow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.flow-item { text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px; }
+.flow-item .icon { font-size: 1.8rem; display: block; }
+.flow-item .label { font-size: 12px; color: #9ca3af; display: block; margin: 4px 0; }
+.flow-item .value { font-size: 1.1rem; font-weight: 600; }
+.savings { text-align: center; }
+.savings-big { font-size: 3rem; font-weight: 700; color: #16a34a; margin: 0.5rem 0; }
+.savings-sub { color: #6b7280; font-size: 14px; margin-bottom: 1.5rem; }
+.savings-details { display: flex; justify-content: space-around; font-size: 14px; }
