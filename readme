@@ -1,0 +1,51 @@
+
+## 🎯 Features
+
+### Core Capabilities
+- **Real-time Power Flow Widget** - Live solar, grid, battery, consumption visualization
+- **Cost Savings Calculator** - Daily/weekly/monthly/yearly savings + CO₂ reduction
+- **Automations List** - Smart energy recommendations
+- **Multi-tenant Login** - Client-specific dashboards
+- **REST + WebSocket APIs** - Real-time updates
+
+### Data Sources (MVP → Production Path)
+| Source | MVP | Production |
+|--------|-----|-------------|
+| Mock Data | ✅ | - |
+| Home Assistant | - | REST API bridge |
+| Fronius Inverter | - | API parser |
+| SMA Inverter | - | API parser |
+| Shelly EM | - | API integration |
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18, Vite, TailwindCSS, Recharts |
+| Backend | Node.js, Express, WebSocket (ws) |
+| Database | SQLite (MVP) → PostgreSQL (Production) |
+| Real-time | WebSocket |
+| API Protocol | REST + WebSocket |
+
+## 🚦 Quick Start (Without Docker)
+
+### Prerequisites
+- Node.js 18+ or 20+
+- npm or yarn
+
+### Installation & Run
+
+```bash
+# 1. Install backend dependencies
+cd backend
+npm install
+
+# 2. Start backend server (port 5000)
+npm run dev
+
+# 3. In new terminal, install frontend dependencies
+cd frontend
+npm install
+
+# 4. Start frontend dev server (port 5173)
+npm run dev
