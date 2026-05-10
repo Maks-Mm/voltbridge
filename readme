@@ -1,51 +1,233 @@
+# ⚡ VoltBridge
 
-## 🎯 Features
+**Smart Energy Management Platform — HEMS SaaS MVP**
 
-### Core Capabilities
-- **Real-time Power Flow Widget** - Live solar, grid, battery, consumption visualization
-- **Cost Savings Calculator** - Daily/weekly/monthly/yearly savings + CO₂ reduction
-- **Automations List** - Smart energy recommendations
-- **Multi-tenant Login** - Client-specific dashboards
-- **REST + WebSocket APIs** - Real-time updates
+---
 
-### Data Sources (MVP → Production Path)
-| Source | MVP | Production |
-|--------|-----|-------------|
-| Mock Data | ✅ | - |
-| Home Assistant | - | REST API bridge |
-| Fronius Inverter | - | API parser |
-| SMA Inverter | - | API parser |
-| Shelly EM | - | API integration |
+## What is VoltBridge?
 
-## 🛠️ Tech Stack
+VoltBridge is a Home Energy Management System (HEMS) that connects the separate energy systems in a building — solar (PV), battery storage, heat pump, EV charger, smart meter, and heating — into a single unified dashboard.
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 18, Vite, TailwindCSS, Recharts |
-| Backend | Node.js, Express, WebSocket (ws) |
-| Database | SQLite (MVP) → PostgreSQL (Production) |
-| Real-time | WebSocket |
-| API Protocol | REST + WebSocket |
+Today, a homeowner with a PV installation has 4–6 separate apps: one for the inverter, one for the wallbox, one for the heating, one for the smart meter. None of them talk to each other. Energy is wasted, costs stay high, and the owner has no overview.
 
-## 🚦 Quick Start (Without Docker)
+VoltBridge fixes this. One dashboard. Real savings. Measurable results.
+
+---
+
+## The Problem We Solve
+
+| Before VoltBridge | After VoltBridge |
+|---|---|
+| 4–6 separate apps | 1 unified dashboard |
+| No cross-system automation | PV surplus → auto-charge EV |
+| No cost visibility | Live savings displayed in € |
+| Manual control | Automated energy optimization |
+| Electrician installs, nobody configures | Full software layer on top |
+
+---
+
+## Who Is This For?
+
+**End clients (B2C via B2B channel):**
+- German homeowners with PV installations (3.8M+ HEMS installs in Europe, growing fast)
+- Landlords with multiple rental units who want central energy monitoring
+- Small businesses (workshops, medical practices, offices) without an IT department
+
+**B2B partners:**
+- Electrical installation companies who install PV and smart home hardware but need a software partner
+- SHK (plumbing/heating/air) firms expanding into smart energy
+- Architects and builders offering smart home packages in new construction
+
+---
+
+## Business Model
+
+| Revenue type | Description | Price range |
+|---|---|---|
+| One-time setup | Planning + installation + configuration + client training | €500 – €2,000 |
+| Monthly support subscription | Remote monitoring, updates, new devices | €25 – €60/month |
+| Device extensions | Each new sensor, camera, wallbox added later | €100 – €400 |
+| B2B white-label | Per-client fee from electrician partners | €15 – €30/client/month |
+
+**Key legal driver:** Since 2024, §14a EnWG (German Energy Law) requires all new wallboxes and heat pumps to be remotely controllable. Every new PV installation in Germany legally needs what VoltBridge provides.
+
+---
+
+## Technology Stack
+
+### Frontend
+- **React 19** — component-based UI
+- **Vite** — fast dev server and build tool
+- **Recharts** — energy charts and visualizations
+- **React Router** — multi-page navigation
+- **TanStack Query** — server state and data fetching
+- **Axios** — HTTP client for API calls
+- **Tailwind CSS** — utility-first styling
+
+### Backend
+- **Node.js + Express 5** — REST API server
+- **dotenv** — environment configuration
+- **CORS** — cross-origin support for local dev
+- **ws** — WebSocket support (future: live data push)
+- **pg** — PostgreSQL client (future: persistent data)
+- **nodemon** — auto-restart in development
+
+### Hardware integrations (planned)
+- **Home Assistant** (Raspberry Pi 4) — central smart home controller
+- **Fronius / SMA inverters** — local JSON API, no cloud needed
+- **Shelly EM** — smart energy meter
+- **evcc** — EV charger + PV surplus control
+- **Zigbee/Z-Wave sensors** — temperature, motion, window sensors
+
+---
+
+## Project Structure
+
+```
+VOLTBRIDGE/
+│
+├── backend/
+│   ├── src/
+│   │   ├── index.js                  ← Express server entry point
+│   │   ├── routes/
+│   │   │   ├── energy.js             ← GET /api/energy/live, /history
+│   │   │   ├── savings.js            ← GET /api/savings
+│   │   │   └── auth.js               ← POST /api/auth/login
+│   │   ├── services/
+│   │   │   ├── mock.js               ← Simulated data (MVP phase)
+│   │   │   ├── homeassistant.js      ← Real HA REST API (future)
+│   │   │   └── inverter.js           ← Fronius/SMA parsers (future)
+│   │   └── db/
+│   │       └── index.js              ← PostgreSQL connection (future)
+│   ├── .env                          ← Environment variables (not in git)
+│   └── package.json
+│
+└── frontend/
+    ├── index.html                    ← Vite HTML entry point
+    ├── vite.config.js                ← Vite + React plugin config
+    ├── src/
+    │   ├── main.jsx                  ← React app bootstrap
+    │   ├── App.jsx                   ← Routes definition
+    │   ├── index.css                 ← Global styles
+    │   ├── api/
+    │   │   └── client.js             ← Axios API client
+    │   ├── components/
+    │   │   ├── PowerFlowCard.jsx     ← Live solar/house/grid/battery
+    │   │   ├── SavingsCard.jsx       ← Monthly savings in €
+    │   │   ├── EnergyChart.jsx       ← 24h history line chart
+    │   │   └── AutomationsList.jsx   ← Active automations overview
+    │   └── pages/
+    │       ├── Dashboard.jsx         ← Main energy dashboard
+    │       ├── Login.jsx             ← Client login page
+    │       └── Clients.jsx           ← Multi-tenant client list
+    └── package.json
+```
+
+---
+
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ or 20+
-- npm or yarn
+- Node.js 18+ installed
+- npm 9+
+- Two terminal windows
 
-### Installation & Run
+### 1. Start the backend
 
 ```bash
-# 1. Install backend dependencies
-cd backend
+cd VOLTBRIDGE/backend
 npm install
-
-# 2. Start backend server (port 5000)
 npm run dev
+```
 
-# 3. In new terminal, install frontend dependencies
-cd frontend
+Server starts at `http://localhost:3001`
+
+Test endpoints:
+- `http://localhost:3001/api/health` — server status
+- `http://localhost:3001/api/energy/live` — live energy data (mock)
+- `http://localhost:3001/api/savings` — monthly savings (mock)
+
+### 2. Start the frontend
+
+```bash
+cd VOLTBRIDGE/frontend
 npm install
-
-# 4. Start frontend dev server (port 5173)
 npm run dev
+```
+
+Dashboard opens at `http://localhost:5173`
+
+### Demo login
+- Email: `demo@voltbridge.de`
+- Password: `demo123`
+
+---
+
+## Development Roadmap
+
+### Phase 1 — MVP (current)
+- [x] Project structure and file setup
+- [x] Express backend with mock data
+- [x] React frontend with energy dashboard
+- [x] PowerFlowCard (live solar/house/grid/battery)
+- [x] SavingsCard (monthly € savings)
+- [x] EnergyChart (24h history)
+- [x] AutomationsList (static display)
+- [x] Login page
+
+### Phase 2 — Real data (next)
+- [ ] Connect Home Assistant REST API
+- [ ] Fronius inverter local API integration
+- [ ] Shelly EM smart meter integration
+- [ ] Replace mock.js with real data sources
+- [ ] WebSocket for live push updates
+
+### Phase 3 — Multi-tenant SaaS
+- [ ] PostgreSQL database for client data
+- [ ] JWT authentication per client
+- [ ] Per-client Home Assistant instance mapping
+- [ ] Admin dashboard (manage all clients)
+- [ ] Monthly report generation (PDF)
+
+### Phase 4 — Scale
+- [ ] Docker deployment
+- [ ] VPS hosting (Hetzner Cloud recommended)
+- [ ] Mobile-responsive polish
+- [ ] White-label for electrician partners
+- [ ] Automated billing integration
+
+---
+
+## Environment Variables
+
+Create `backend/.env` (never commit to git):
+
+```env
+PORT=3001
+HA_URL=http://192.168.1.100:8123
+HA_TOKEN=your_home_assistant_long_lived_token
+JWT_SECRET=your_secret_key_here
+DB_URL=postgresql://user:password@localhost:5432/voltbridge
+```
+
+---
+
+## Why This Project Exists
+
+The smart home and renewable energy market is growing structurally — not as a trend, but because energy costs in Germany and Europe remain permanently high and automation is the only scalable way to reduce them.
+
+Most smart home service providers are either pure electricians (no software) or pure IT developers (no hardware, no on-site work). VoltBridge is built by a hybrid: someone who understands both sides, speaks four languages (German, English, Polish, Russian), and can serve the underserved Eastern European household segment in Germany that currently has no dedicated smart home integrator.
+
+This is not a generic SaaS product. It is infrastructure software for the physical world.
+
+---
+
+## Author
+
+Built by Maksym — fullstack developer and smart home integrator, Berlin.
+
+Languages: Deutsch · English · Polski · Русский
+
+---
+
+*VoltBridge — The bridge between your energy hardware and your savings.*

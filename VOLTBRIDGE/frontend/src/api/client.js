@@ -1,12 +1,9 @@
-import axios from 'axios';
+//VOLTBRIDGE/frontend/src/api/client.js
+
+import axios from 'axios'
 
 const api = axios.create({
-  baseURL: '/api',   // proxied to localhost:3001 via vite.config.js
-  timeout: 5000
-});
+  baseURL: 'http://localhost:5000/api'
+})
 
-export const getLiveEnergy = ()           => api.get('/energy/live');
-export const getHistory    = (hours = 24) => api.get(`/energy/history?hours=${hours}`);
-export const getSavings    = (days  = 30) => api.get(`/savings?days=${days}`);
-
-export default api;
+export default api

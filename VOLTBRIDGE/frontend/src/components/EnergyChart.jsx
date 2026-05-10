@@ -1,36 +1,44 @@
-import { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { getHistory } from '../api/client';
 
-export default function EnergyChart() {
-  const [data, setData] = useState([]);
+//VOLTBRIDGE/frontend/src/components/EnergyChart.jsx
 
-  useEffect(() => {
-    getHistory(24).then(r => {
-      const formatted = r.data.data.map(p => ({
-        time:  new Date(p.time).getHours() + ':00',
-        Solar: Math.round(p.pv_watts / 100) / 10,
-        House: Math.round(p.house_watts / 100) / 10
-      }));
-      setData(formatted);
-    }).catch(console.error);
-  }, []);
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid
+} from 'recharts'
 
+const data = [
+  { time: '00:00', solar: 0, usage: 2 },
+  { time: '04:00', solar: 0, usage: 1.5 },
+  { time: '08:00', solar: 3, usage: 2.4 },
+  { time: '12:00', solar: 7, usage: 4 },
+  { time: '16:00', solar: 5, usage: 3 },
+  { time: '20:00', solar: 1, usage: 4.4 }
+]
+
+function EnergyChart() {
   return (
-    <div className="card dash-grid-wide">
-      <h2>24h Energy Overview (kW)</h2>
-      <div className="chart-wrap">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-            <XAxis dataKey="time" tick={{ fontSize: 11 }} interval={3} />
-            <YAxis tick={{ fontSize: 11 }} />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="Solar" stroke="#f59e0b" dot={false} strokeWidth={2} />
-            <Line type="monotone" dataKey="House" stroke="#3b82f6" dot={false} strokeWidth={2} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <div className="card">
+      <h2>Energy Analytics</h2>
+
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="time" />
+          <YAxis />
+          <Tooltip />
+
+          <Line type="monotone" dataKey="solar" stroke="#22c55e" />
+
+          <Line type="monotone" dataKey="usage" stroke="#3b82f6" />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
-  );
+  )
 }
+
+export default EnergyChart
