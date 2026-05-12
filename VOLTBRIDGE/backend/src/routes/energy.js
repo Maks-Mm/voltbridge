@@ -1,4 +1,4 @@
-//VOLTBRIDGE/baclend/src/routes/energy.js
+//VOLTBRIDGE/backend/src/routes/energy.js
 
 import express from 'express'
 import { getLiveEnergyData, getAutomations } from '../services/mock.js'
